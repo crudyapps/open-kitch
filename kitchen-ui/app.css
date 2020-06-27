@@ -46,3 +46,43 @@ time, mark, audio, video {
     height: 2em;
 }
 
+.menu{
+    display: flex;
+    flex-direction: column;
+    padding: 5em;
+}
+
+.menuHeader {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0em 0em 2em 0em;
+}
+
+.row-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.menu-item {
+    width: 5em;
+}
+
+.menu-name {
+    width: 15em;
+}
+
+.menu-description {
+    width: 20em;
+}
+
+.menu-price {
+    width: 8em;
+    text-align: right;
+}
