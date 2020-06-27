@@ -1,4 +1,5 @@
 import React from "react";
+import Layout from "./Layout";
 
 
 export interface Order {
@@ -15,9 +16,9 @@ export interface OrderItem {
 
 function OrderPage() {
     return (
-        <div>
-            Order
-        </div>
+        <Layout>
+            <div>Order</div>
+        </Layout>
 
     )
 }

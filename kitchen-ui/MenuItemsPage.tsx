@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Money, Currency } from "./money";
+import Layout from "./Layout";
 
 export interface MenuItem {
     item: number;
@@ -24,37 +25,34 @@ function MenuItemsPage() {
     }
 
     return (
-        <div className="container">
-            <div className="header"></div>
-            <div className="body">
-                <div className="menu">
-                    <div className="menuHeader">
-                        <button onClick={add}>+</button>
-                    </div>
-                    <div className="row-container">
-                        <div className="row">
-                            <div className="menu-item">item</div>
-                            <div className="menu-name">Name</div>
-                            <div className="menu-description">Description</div>
-                            <div className="menu-price">Price</div>
-                        </div>
-                    </div>
-                    {
-                        menuItems.map((menuItem, index) => (
-                            <div key={`menuItem-${index}`} className="row-container">
-                                <div className="row">
-                                    <div className="menu-item">{menuItem.item}</div>
-                                    <div className="menu-name">{menuItem.name}</div>
-                                    <div className="menu-description">{menuItem.description}</div>
-                                    <div className="menu-price">{menuItem.price.toString()}</div>
-                                </div>
-                            </div>
-                        ))
-                    }
+        <Layout>
+            <div className="menu">
+                <div className="menuHeader">
+                    <button onClick={add}>+</button>
                 </div>
+                <div className="row-container">
+                    <div className="row">
+                        <div className="menu-item">item</div>
+                        <div className="menu-name">Name</div>
+                        <div className="menu-description">Description</div>
+                        <div className="menu-price">Price</div>
+                    </div>
+                </div>
+                {
+                    menuItems.map((menuItem, index) => (
+                        <div key={`menuItem-${index}`} className="row-container">
+                            <div className="row">
+                                <div className="menu-item">{menuItem.item}</div>
+                                <div className="menu-name">{menuItem.name}</div>
+                                <div className="menu-description">{menuItem.description}</div>
+                                <div className="menu-price">{menuItem.price.toString()}</div>
+                            </div>
+                        </div>
+                    ))
+                }
             </div>
-            <div className="footer"></div>
-        </div>
+        </Layout>
+
     );
 }
 
