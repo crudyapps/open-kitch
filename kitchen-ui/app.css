@@ -15,29 +15,50 @@ time, mark, audio, video {
 	padding: 0;
 	border: 0;
 	font-size: 100%;
-	font: inherit;
+	font-family:  "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	vertical-align: baseline;
-}
-
-.main {
-    /* Reference an image file */
-    color: red;
 }
 
 .container {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background-color: beige;
 }
 
 .header{
-    background-color: cadetblue;
-    height: 2em;
+    height: 3em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 3px 3px 5px 6px #ccc;
+}
+
+.header > div {
+    padding: 1em;
+}
+
+.header > .left {
+    display: flex;
+}
+
+.navItem {
+    transition-duration: 0.5s;
+    padding: 1em 0.5em 1em 0.5em;
+    color:darkblue;
+}
+
+.navItem.selected {
+    text-decoration: underline;
+}
+
+.navItem:hover {
+    padding: 1em 0.5em 1em 0.5em;
+    color:black;
+    background-color: lightgray;
+    cursor: pointer;
 }
 
 .body{
-    background-color: darkmagenta;
     flex-grow: 10;
 }
 
