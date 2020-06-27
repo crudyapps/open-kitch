@@ -30,7 +30,7 @@ function MenuItemsPage() {
                 <div className="menuHeader">
                     <button onClick={add}>+</button>
                 </div>
-                <div className="row-container">
+                <div className="row-container  title">
                     <div className="row">
                         <div className="menu-item">item</div>
                         <div className="menu-name">Name</div>

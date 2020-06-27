@@ -63,7 +63,6 @@ time, mark, audio, video {
 }
 
 .footer{
-    background-color: blue;
     height: 2em;
 }
 
@@ -76,15 +75,20 @@ time, mark, audio, video {
 .menuHeader {
     display: flex;
     justify-content: flex-end;
-    padding: 0em 0em 2em 0em;
+    padding: 0em 0em 1em 0em;
 }
 
 .row-container {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    padding: 0.5em;
 }
 
+.row-container.title{
+    color: white;
+    background-color: teal;
+}
 .row {
     display: flex;
     justify-content: space-between;
@@ -106,4 +110,134 @@ time, mark, audio, video {
 .menu-price {
     width: 8em;
     text-align: right;
+}
+
+.order {
+    display: flex;
+    flex-direction: column;
+    padding: 2em;
+    height:100%;
+}
+
+.order-details{
+    display: flex;
+    flex-direction: column;
+    flex: 5 0 35em;
+    border-radius: 2em;
+    border: solid 0.05em rgb(81, 116, 173);
+    padding: 2em;
+}
+
+.order-list {
+    flex: 1 0 10em; 
+    border-radius: 2em;
+    padding: 2em;
+    margin: 0 0 0 1em ;
+    border: solid  0.05em  rgb(81, 116, 173);
+}
+
+.waiting-title {
+    padding: 0 0 0.5em 0;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.waiting-order{
+    padding: 0.5em;
+}
+
+.order-top{
+    display: flex;
+    flex-direction: row;
+    flex: 3 0;
+}
+
+.order-bottom {
+    display: flex;
+    flex-direction: row;
+    flex: 1 0;
+}
+
+.dashboard-card{
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 10em;
+    align-items: center;
+    padding: 2em;
+}
+
+.dashboard-card > div:first-child{
+    font-size: large;
+    flex: 1 0 ;
+    padding: 0 1em 0.25em 1em;
+}
+
+.dashboard-card > div:nth-child(2){
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: xx-large;
+    flex: 5 0;
+    padding: 0.25em 1em 0.25em 1em;
+}
+
+.dashboard-card > div:last-child{
+    font-size: small;
+    flex: 1 0 ;
+}
+
+.order-info{
+    display: flex;
+    justify-content: space-between;
+    padding: 1em;
+}
+
+
+.contact-name{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: small;
+}
+.contact-name>div:last-child{
+    font-size: x-large;
+    text-align: left;
+}
+
+.order-number{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: small;
+}
+
+.order-number > div:last-child{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: x-large;
+    text-align: right;
+}
+.order-item {
+    display: flex;
+    padding: 1em;
+    align-items: center;
+}
+
+.order-items {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 20em;
+    border-radius: 2em;
+    padding: 2em;
+}
+
+.order-item-number{
+    flex-grow: 1 0 3em;
+    padding: 1em;
+}
+.order-item-name{
+    flex-grow: 10 0 10em;
+    padding: 1em;
+}
+.order-item-count{
+    flex-grow: 1 0 10em;
+    padding: 1em;
+}
+button {
+    padding: 0.5em 0.5em 0.5em 0.5em;
 }
