@@ -116,6 +116,7 @@ time, mark, audio, video {
     display: flex;
     flex-direction: column;
     padding: 2em;
+    height:100%;
 }
 
 .order-details{
@@ -155,7 +156,6 @@ time, mark, audio, video {
     display: flex;
     flex-direction: row;
     flex: 1 0;
-    justify-content: space-evenly;
 }
 
 .dashboard-card{
@@ -173,6 +173,9 @@ time, mark, audio, video {
 }
 
 .dashboard-card > div:nth-child(2){
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     font-size: xx-large;
     flex: 5 0;
     padding: 0.25em 1em 0.25em 1em;
