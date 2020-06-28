@@ -119,21 +119,40 @@ time, mark, audio, video {
     height:100%;
 }
 
+.order-details-container {
+    display: flex;
+    padding: 1em;
+    flex: 5 0 35em;
+    padding: 1em;
+}
+
+.order-info{
+    display: flex;
+    justify-content: space-between;
+    padding: 1em;
+}
+
 .order-details{
     display: flex;
     flex-direction: column;
-    flex: 5 0 35em;
     border-radius: 2em;
     border: solid 0.05em rgb(81, 116, 173);
     padding: 2em;
+    flex: 1 0;
+}
+
+.order-list-container{
+    display:flex;
+    flex: 1 0 10em; 
+    padding: 1em;
 }
 
 .order-list {
-    flex: 1 0 10em; 
+    padding: 1em;
     border-radius: 2em;
     padding: 2em;
-    margin: 0 0 0 1em ;
     border: solid  0.05em  rgb(81, 116, 173);
+    flex: 1 0 11em;
 }
 
 .waiting-title {
@@ -149,6 +168,7 @@ time, mark, audio, video {
 .order-top{
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     flex: 3 0;
 }
 
@@ -166,6 +186,10 @@ time, mark, audio, video {
     padding: 2em;
 }
 
+.dashboard-card > div{
+    justify-content: center;
+}
+
 .dashboard-card > div:first-child{
     font-size: large;
     flex: 1 0 ;
@@ -174,24 +198,27 @@ time, mark, audio, video {
 
 .dashboard-card > div:nth-child(2){
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    text-align: center;
+    align-items: center;
     font-size: xx-large;
     flex: 5 0;
     padding: 0.25em 1em 0.25em 1em;
+}
+
+.dashboard-card-money{
+    display: flex;
+    flex-direction: row;
+}
+
+.dashboard-card-money > div:first-child{
+    font-size: xx-small;
+    padding: 0 0.5em 0 0;
 }
 
 .dashboard-card > div:last-child{
     font-size: small;
     flex: 1 0 ;
 }
-
-.order-info{
-    display: flex;
-    justify-content: space-between;
-    padding: 1em;
-}
-
 
 .contact-name{
     font-family: 'Courier New', Courier, monospace;
@@ -212,11 +239,6 @@ time, mark, audio, video {
     font-size: x-large;
     text-align: right;
 }
-.order-item {
-    display: flex;
-    padding: 1em;
-    align-items: center;
-}
 
 .order-items {
     display: flex;
@@ -226,18 +248,27 @@ time, mark, audio, video {
     padding: 2em;
 }
 
+.order-item {
+    display: flex;
+    align-items: center;
+}
+
+.order-item > div {
+    padding: 1em;
+}
+
 .order-item-number{
-    flex-grow: 1 0 3em;
-    padding: 1em;
+    flex: 1 0 3em;
 }
+
 .order-item-name{
-    flex-grow: 10 0 10em;
-    padding: 1em;
+    flex: 10 0 20em;
 }
+
 .order-item-count{
-    flex-grow: 1 0 10em;
-    padding: 1em;
+    flex: 1 0 10em;
 }
+
 button {
     padding: 0.5em 0.5em 0.5em 0.5em;
 }
