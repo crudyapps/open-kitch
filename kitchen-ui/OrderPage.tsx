@@ -26,31 +26,35 @@ function OrderPage() {
     const [order, setOrder] = useState<Order>();
     const [ordersWaiting, setOrdersWaiting] = useState<OrderWaiting[]>()
     useEffect(() => {
-        setOrdersWaiting([{
-            number: 56,
-            contact: "Alex",
-            value: new Money(Currency.AUD, 879, 20),
-            created: new Date()
-        }, {
-            number: 57,
-            contact: "John",
-            value: new Money(Currency.AUD, 55, 50),
-            created: new Date()
-        }])
-        setOrder({
-            day: new Date(Date.now()),
-            contact: "Justin",
-            number: 55,
-            items: [{
-                number: 1,
-                name: "eggs on toast",
-                count: 5
+        if (!isLoaded) {
+
+            setOrdersWaiting([{
+                number: 56,
+                contact: "Alex",
+                value: new Money(Currency.AUD, 879, 20),
+                created: new Date()
             }, {
-                number: 2,
-                name: "smashed avocado",
-                count: 2
-            }]
-        })
+                number: 57,
+                contact: "John",
+                value: new Money(Currency.AUD, 55, 50),
+                created: new Date()
+            }])
+            setOrder({
+                day: new Date(Date.now()),
+                contact: "Justin",
+                number: 55,
+                items: [{
+                    number: 1,
+                    name: "eggs on toast",
+                    count: 5
+                }, {
+                    number: 2,
+                    name: "smashed avocado",
+                    count: 2
+                }]
+            });
+            setIsLoaded(true);
+        }
     }, [isLoaded])
 
     return (
