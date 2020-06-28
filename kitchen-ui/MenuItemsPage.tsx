@@ -8,16 +8,21 @@ export interface MenuItem {
     description: string;
     price: Money;
 }
+
 function MenuItemsPage() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
 
     useEffect(() => {
-        setMenuItems([
-            { item: 1, name: "eggs on toast", description: "old favorites", price: new Money(Currency.AUD, 8, 50) },
-            { item: 2, name: "smashed avocado on toasts", description: "yuppy delight", price: new Money(Currency.AUD, 10, 20) },
-            { item: 3, name: "pumpkin soup", description: "sweet winter favorites", price: new Money(Currency.AUD, 5, 30) }
-        ])
+        if (!isLoaded) {
+            setMenuItems([
+                { item: 1, name: "eggs on toast", description: "old favorites", price: new Money(Currency.AUD, 8, 50) },
+                { item: 2, name: "smashed avocado on toasts", description: "yuppy delight", price: new Money(Currency.AUD, 10, 20) },
+                { item: 3, name: "pumpkin soup", description: "sweet winter favorites", price: new Money(Currency.AUD, 5, 30) }
+            ])
+            setIsLoaded(true);
+        }
+
     }, [isLoaded]);
 
     const add = () => {
