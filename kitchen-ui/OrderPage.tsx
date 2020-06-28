@@ -57,38 +57,42 @@ function OrderPage() {
         <Layout>
             <div className="order">
                 <div className="order-top">
-                    <div className="order-details">
-                        <div className="order-info">
-                            <div className="contact-name">
-                                <div>
-                                    Contact name
+                    <div className="order-details-container">
+                        <div className="order-details">
+                            <div className="order-info">
+                                <div className="contact-name">
+                                    <div>
+                                        Contact name
                                 </div>
-                                <div>
-                                    {order?.contact}
+                                    <div>
+                                        {order?.contact}
+                                    </div>
+                                </div>
+                                <div className="order-number">
+                                    <div>
+                                        Order number
+                                </div>
+                                    <div>
+                                        #{order?.number}
+                                    </div>
                                 </div>
                             </div>
-                            <div className="order-number">
-                                <div>
-                                    Order number
-                                </div>
-                                <div>
-                                    #{order?.number}
-                                </div>
+                            <div className="order-items">
+                                {
+                                    order?.items?.map((item, index) =>
+                                        (<div key={`oi-${index}`} className="order-item">
+                                            <div className="order-item-number">{item.number}</div><div className="order-item-name">{item.name}</div><div className="order-item-count">{item.count}</div></div>))
+                                }
                             </div>
-                        </div>
-                        <div className="order-items">
-                            {
-                                order?.items?.map((item, index) =>
-                                    (<div key={`oi-${index}`} className="order-item">
-                                        <div className="order-item-number">{item.number}</div><div className="order-item-name">{item.name}</div><div className="order-item-count">{item.count}</div></div>))
-                            }
                         </div>
                     </div>
-                    <div className="order-list">
-                        <div className="waiting-title">Waiting</div>
-                        {
-                            ordersWaiting?.map((order, index) => (<div key={`ow-${index}`} className="waiting-order">{`#${order.number}-${order.contact}--${order.value.toString(true)}`}</div>))
-                        }
+                    <div className="order-list-container">
+                        <div className="order-list">
+                            <div className="waiting-title">Waiting</div>
+                            {
+                                ordersWaiting?.map((order, index) => (<div key={`ow-${index}`} className="waiting-order">{`#${order.number}-${order.contact}--${order.value.toString(true)}`}</div>))
+                            }
+                        </div>
                     </div>
                 </div>
                 <div className="order-bottom">
@@ -104,7 +108,10 @@ function OrderPage() {
                     </div>
                     <div className="dashboard-card">
                         <div>Revenue</div>
-                        <div>AUD 5000</div>
+                        <div className="dashboard-card-money">
+                            <div>AUD</div>
+                            <div>5000</div>
+                        </div>
                         <div>for today</div>
                     </div>
                 </div>
