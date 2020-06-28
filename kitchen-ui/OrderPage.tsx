@@ -27,7 +27,6 @@ function OrderPage() {
     const [ordersWaiting, setOrdersWaiting] = useState<OrderWaiting[]>()
     useEffect(() => {
         if (!isLoaded) {
-
             setOrdersWaiting([{
                 number: 56,
                 contact: "Alex",
