@@ -38,3 +38,7 @@ note: the `-g` makes wrangler accessible not just in your current project, but e
 You should be able publish your ui to a website (after you've built the application with `npm run build-prod`) using:
     
     npm run loc-to-prod
+
+After publishing, you would now be able to access the site(url below) from your browser
+
+    https://open-kitch.<your account name>.workers.dev/
