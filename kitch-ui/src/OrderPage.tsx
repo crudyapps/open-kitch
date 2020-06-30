@@ -23,8 +23,10 @@ export interface OrderItem {
 
 function OrderPage() {
     const [isLoaded, setIsLoaded] = useState(false);
+    const [showChart, setShowChart] = useState(false);
     const [order, setOrder] = useState<Order>();
     const [ordersWaiting, setOrdersWaiting] = useState<OrderWaiting[]>()
+
     useEffect(() => {
         if (!isLoaded) {
             setOrdersWaiting([{
@@ -56,6 +58,54 @@ function OrderPage() {
         }
     }, [isLoaded])
 
+    const getDashboardTextCards = () => {
+        return (
+            <>
+                <div className="dashboard-card">
+                    <div>Order count</div>
+                    <div>99</div>
+                    <div>for today</div>
+                </div>
+                <div className="dashboard-card">
+                    <div>Order Item</div>
+                    <div>753</div>
+                    <div>per hour</div>
+                </div>
+                <div className="dashboard-card">
+                    <div>Revenue</div>
+                    <div className="dashboard-card-money">
+                        <div>AUD</div>
+                        <div>5000</div>
+                    </div>
+                    <div>for today</div>
+                </div>
+            </>
+        );
+    }
+    const getDashboardChartCards = () => {
+        return (
+            <>
+                <div className="dashboard-card">
+                    <div>[chart here]Order count</div>
+                    <div>99</div>
+                    <div>for today</div>
+                </div>
+                <div className="dashboard-card">
+                    <div>Order Item</div>
+                    <div>753</div>
+                    <div>per hour</div>
+                </div>
+                <div className="dashboard-card">
+                    <div>Revenue</div>
+                    <div className="dashboard-card-money">
+                        <div>AUD</div>
+                        <div>5000</div>
+                    </div>
+                    <div>for today</div>
+                </div>
+            </>
+        );
+    }
     return (
         <Layout>
             <div className="order">
@@ -99,27 +149,18 @@ function OrderPage() {
                     </div>
                 </div>
                 <div className="order-bottom">
-                    <div className="dashboard-card">
-                        <div>Order count</div>
-                        <div>99</div>
-                        <div>for today</div>
+                    <div className="dashboard-controls">
+                        <button onClick={() => setShowChart(!showChart)}>
+                            {showChart ? (<i className="material-icons">text_snippet</i>) : (<i className="material-icons">insert_chart</i>)}
+                            <i className="material-icons">arrow_right</i>
+                        </button>
                     </div>
-                    <div className="dashboard-card">
-                        <div>Order Item</div>
-                        <div>753</div>
-                        <div>per hour</div>
-                    </div>
-                    <div className="dashboard-card">
-                        <div>Revenue</div>
-                        <div className="dashboard-card-money">
-                            <div>AUD</div>
-                            <div>5000</div>
-                        </div>
-                        <div>for today</div>
+                    <div className="dashboard-section">
+                        {showChart ? getDashboardChartCards() : getDashboardTextCards()}
                     </div>
                 </div>
-            </div>
-        </Layout>
+            </div >
+        </Layout >
 
     )
 }

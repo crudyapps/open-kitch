@@ -10,7 +10,7 @@ table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, embed, 
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+time, mark, audio, video, button {
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -174,8 +174,19 @@ time, mark, audio, video {
 
 .order-bottom {
     display: flex;
+    flex-direction: column;
+    flex: 1 0;
+}
+
+.dashboard-section {
+    display: flex;
     flex-direction: row;
     flex: 1 0;
+}
+
+.dashboard-controls {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .dashboard-card{
@@ -224,6 +235,7 @@ time, mark, audio, video {
     font-family: 'Courier New', Courier, monospace;
     font-size: small;
 }
+
 .contact-name>div:last-child{
     font-size: x-large;
     text-align: left;
