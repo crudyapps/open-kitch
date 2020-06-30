@@ -1,14 +1,18 @@
 {
   "name": "open-kitch-ui",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "The user interface for the kitchen",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/crudyapps/open-kitch.git"
+  },
+  "main": "App.js",
   "scripts": {
     "start": "parcel ./src/index.html",
     "build-prod": "NODE_ENV=production parcel build ./src/index.html --no-minify",
     "loc-to-prod": "env-cmd -f ./.local-to-prod wrangler publish"
   },
-  "author": "",
+  "author": "crudyapps",
   "license": "ISC",
   "devDependencies": {
     "@types/react-dom": "^16.9.8",
