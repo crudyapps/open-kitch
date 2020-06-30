@@ -1,10 +1,10 @@
 {
-  "name": "kitchen-ui",
+  "name": "open-kitch-ui",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "parcel index.html"
+    "start": "parcel ./src/index.html",
   },
   "author": "",
   "license": "ISC",
