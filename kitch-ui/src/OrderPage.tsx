@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Chart from "react-google-charts";
 import Layout from "./Layout";
 import { Money, Currency } from "./money";
 
@@ -82,26 +83,91 @@ function OrderPage() {
             </>
         );
     }
+
     const getDashboardChartCards = () => {
         return (
             <>
-                <div className="dashboard-card">
-                    <div>[chart here]Order count</div>
-                    <div>99</div>
-                    <div>for today</div>
+                <div className="dashboard-card chart">
+                    Daily Order Count
+                    <Chart
+                        width={300}
+                        height={150}
+                        chartType="ColumnChart"
+                        loader={<div>Loading Chart</div>}
+                        data={[
+                            ['day', 'last week', 'this week',],
+                            ['Mon', 650, 750],
+                            ['Tue', 550, 570],
+                            ['Wed', 600, 580],
+                            ['Thu', 700, 700],
+                            ['today', 900, 99],
+                        ]}
+                        options={{
+                            hAxis: {
+                                title: 'Day of week',
+                                minValue: 0,
+                            },
+                            vAxis: {
+                                title: 'Order Count',
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }}
+                    />
                 </div>
-                <div className="dashboard-card">
-                    <div>Order Item</div>
-                    <div>753</div>
-                    <div>per hour</div>
+                <div className="dashboard-card chart">
+                    Hourly Order Item Count
+                    <Chart
+                        width={300}
+                        height={150}
+                        chartType="LineChart"
+                        loader={<div>Loading Chart</div>}
+                        data={[
+                            ['hour', 'last week', 'this week'],
+                            ['8', 5555, 5552],
+                            ['9', 5475, 5995],
+                            ['10', 5000, 4955],
+                            ['11', 9999, 7000],
+                            ['now', 900, 99],
+                        ]}
+                        options={{
+                            hAxis: {
+                                title: 'Hour',
+                                minValue: 0,
+                            },
+                            vAxis: {
+                                title: 'Order Item Count',
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }}
+                    />
                 </div>
-                <div className="dashboard-card">
-                    <div>Revenue</div>
-                    <div className="dashboard-card-money">
-                        <div>AUD</div>
-                        <div>5000</div>
-                    </div>
-                    <div>for today</div>
+                <div className="dashboard-card chart">
+                    Week Revenue Breakdown
+                    <Chart
+                        width={300}
+                        height={150}
+                        chartType="PieChart"
+                        loader={<div>Loading Chart</div>}
+                        data={[
+                            ['day', 'revenue'],
+                            ['Mon', 5555],
+                            ['Tue', 5475],
+                            ['Wed', 5000],
+                            ['Thu', 9999],
+                            ['Fri', 900],
+                        ]}
+                        options={{
+                            pieHole: 0.4,
+                            pieSliceText: 'none',
+                            legend: {
+                                position: 'labeled'
+                            }
+                        }}
+                    />
                 </div>
             </>
         );
