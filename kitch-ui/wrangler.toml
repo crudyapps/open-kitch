@@ -1,0 +1,7 @@
+name = "open-kitch"
+type = "javascript"
+workers_dev = true
+
+[site]
+bucket = "./dist"
+entry-point = "workers-site"
