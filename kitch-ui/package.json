@@ -5,12 +5,15 @@
   "main": "index.js",
   "scripts": {
     "start": "parcel ./src/index.html",
+    "build-prod": "NODE_ENV=production parcel build ./src/index.html --no-minify",
+    "loc-to-prod": "env-cmd -f ./.local-to-prod wrangler publish"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
+    "env-cmd": "^10.1.0",
     "parcel-bundler": "^1.12.4",
     "typescript": "^3.9.3"
   },
