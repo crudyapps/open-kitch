@@ -197,6 +197,10 @@ time, mark, audio, video, button {
     padding: 2em;
 }
 
+.dashboard-card.chart {
+    padding: 0;
+}
+
 .dashboard-card > div{
     justify-content: center;
 }
