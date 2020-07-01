@@ -43,12 +43,14 @@ async function handleEvent(event) {
     }
     return await getAssetFromKV(event, options)
   } catch (e) {
-    // if an error is thrown try to serve the asset at 404.html
+
+    if (url.pathname !== '/') {
+      const encodedInitPath = encodeURIComponent(`${url.pathname}${url.search}`);
+      return Response.redirect(`${url.origin}?initPath=${encodedInitPath}`, 301);
+    }
+
     if (!DEBUG) {
       try {
-        if (url.pathname !== '/') {
-          return Response.redirect(`${url.origin}?initPath=${url.pathname}`, 301);
-        }
         let notFoundResponse = await getAssetFromKV(event, {
           mapRequestToAsset: req => new Request(`${new URL(req.url).origin}/404.html`, req),
         })
