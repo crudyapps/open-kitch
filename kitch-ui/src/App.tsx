@@ -1,21 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { render } from "react-dom";
-import { Route, BrowserRouter, Redirect } from "react-router-dom";
+import { Route, BrowserRouter, Redirect, useHistory, Switch } from "react-router-dom";
 import MenuItemsPage from "./MenuItemsPage";
 import OrderPage from "./OrderPage";
+import NotFound from "./NotFound";
 
 const App = () => {
-    const { search, pathname } = window.location;
-    const params = new URLSearchParams(search.replace("?", ""))
+    const getInitialPathRedirect = () => {
+        const { search } = window.location;
 
-    const initPath = params.get('initPath');
+        const params = new URLSearchParams(search.replace("?", ""));
+        const initPath = params.get('initPath');
+        if (initPath?.length) {
+            const decodedInitialPath = decodeURIComponent(initPath);
+            return (<Redirect from="/" to={decodedInitialPath} />)
+        }
+        return (<Redirect exact from="/" to="/menuItems" />);
+    }
     return (
         <BrowserRouter>
-            <Route path="/menuItems" component={MenuItemsPage} />
-            <Route path="/orders" component={OrderPage} />
-            <Route path="/orders/:orderId" component={OrderPage} />
-            {initPath?.length ? (<Redirect push to={initPath} />) : null}
-            {pathname === '/' ? (<Redirect push to={"/menuItems"} />) : null}
+            <Switch>
+                <Route path="/menuItems" component={MenuItemsPage} />
+                <Route path="/orders" component={OrderPage} />
+                <Route path="/orders/:orderId" component={OrderPage} />
+                {
+                    getInitialPathRedirect()
+                }
+                <Route path="*" component={NotFound} />
+            </Switch>
         </BrowserRouter>
     )
 }
