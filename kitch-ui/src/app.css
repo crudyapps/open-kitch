@@ -288,3 +288,15 @@ time, mark, audio, video, button {
 button {
     padding: 0.5em 0.5em 0.5em 0.5em;
 }
+
+.not-found {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1 0;
+}
+
+.not-found > div:first-child {
+    font-size: 5em;
+}
