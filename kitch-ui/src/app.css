@@ -26,7 +26,7 @@ time, mark, audio, video, button {
 }
 
 .header{
-    height: 3em;
+    height: 3.5em;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -39,6 +39,15 @@ time, mark, audio, video, button {
 
 .header > .left {
     display: flex;
+}
+
+.body{
+    display: flex;
+    flex-grow: 1;
+}
+
+.footer{
+    height: 2em;
 }
 
 .navItem {
@@ -58,16 +67,9 @@ time, mark, audio, video, button {
     cursor: pointer;
 }
 
-.body{
-    flex-grow: 10;
-}
-
-.footer{
-    height: 2em;
-}
-
 .menu{
     display: flex;
+    flex: 1 0;
     flex-direction: column;
     padding: 5em;
 }
@@ -116,7 +118,7 @@ time, mark, audio, video, button {
     display: flex;
     flex-direction: column;
     padding: 2em;
-    height:100%;
+    flex: 1 0;
 }
 
 .order-details-container {
