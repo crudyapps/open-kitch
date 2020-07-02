@@ -6,27 +6,29 @@ import OrderPage from "./OrderPage";
 import NotFound from "./NotFound";
 
 const App = () => {
+    const routes = [{ path: "/menuItems", component: MenuItemsPage }, { path: "/orders", component: OrderPage }];
     const getInitialPathRedirect = () => {
-        const { search } = window.location;
+        const { pathname, search } = window.location;
 
         const params = new URLSearchParams(search.replace("?", ""));
         const initPath = params.get('initPath');
         if (initPath?.length) {
             const decodedInitialPath = decodeURIComponent(initPath);
-            return (<Redirect from="/" to={decodedInitialPath} />)
+            return (<Redirect to={decodedInitialPath} />)
         }
-        return (<Redirect exact from="/" to="/menuItems" />);
+
+        if (pathname === '/' && (!search || search.length <= 0)) {
+            return (<Redirect to="/menuItems" />);
+        }
+
+        return (<NotFound />);
     }
+
     return (
         <BrowserRouter>
             <Switch>
-                <Route path="/menuItems" component={MenuItemsPage} />
-                <Route path="/orders" component={OrderPage} />
-                <Route path="/orders/:orderId" component={OrderPage} />
-                {
-                    getInitialPathRedirect()
-                }
-                <Route path="*" component={NotFound} />
+                {routes.map((route, index) => <Route key={index} {...route} />)}
+                <Route render={() => getInitialPathRedirect()} />
             </Switch>
         </BrowserRouter>
     )
