@@ -23,6 +23,7 @@
     "typescript": "^3.9.3"
   },
   "dependencies": {
+    "@cloudflare/kv-asset-handler": "0.0.11",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-google-charts": "^3.0.15",

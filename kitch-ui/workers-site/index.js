@@ -24,9 +24,31 @@ addEventListener('fetch', event => {
   }
 })
 
+function serveSinglePageApp(request) {
+  // First apply the default handler, which already has logic to detect
+  // paths that should map to HTML files.
+  request = mapRequestToAsset(request)
+
+  const parsedUrl = new URL(request.url)
+
+  // Detect if the default handler decided to map to
+  // a HTML file in some specific directory.
+  if (parsedUrl.pathname.endsWith('.html')) {
+    // If expected HTML file was missing, just return the root index.html
+    return new Request(`${parsedUrl.origin}/index.html`, request)
+  } else {
+    // The default handler decided this is not an HTML page. It's probably
+    // an image, CSS, or JS file. Leave it as-is.
+    return request
+  }
+}
+
+
 async function handleEvent(event) {
   const url = new URL(event.request.url)
-  let options = {}
+  let options = {
+    mapRequestToAsset: serveSinglePageApp
+  }
 
   /**
    * You can add custom logic to how we fetch your assets
@@ -43,11 +65,6 @@ async function handleEvent(event) {
     }
     return await getAssetFromKV(event, options)
   } catch (e) {
-
-    if (url.pathname !== '/') {
-      const encodedInitPath = encodeURIComponent(`${url.pathname}${url.search}`);
-      return Response.redirect(`${url.origin}?initPath=${encodedInitPath}`, 301);
-    }
 
     if (!DEBUG) {
       try {

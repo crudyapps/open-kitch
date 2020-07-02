@@ -7,15 +7,8 @@ import NotFound from "./NotFound";
 
 const App = () => {
     const routes = [{ path: "/menuItems", component: MenuItemsPage }, { path: "/orders", component: OrderPage }];
-    const getInitialPathRedirect = () => {
+    const getDefaultRoute = () => {
         const { pathname, search } = window.location;
-
-        const params = new URLSearchParams(search.replace("?", ""));
-        const initPath = params.get('initPath');
-        if (initPath?.length) {
-            const decodedInitialPath = decodeURIComponent(initPath);
-            return (<Redirect to={decodedInitialPath} />)
-        }
 
         if (pathname === '/' && (!search || search.length <= 0)) {
             return (<Redirect to="/menuItems" />);
@@ -28,7 +21,7 @@ const App = () => {
         <BrowserRouter>
             <Switch>
                 {routes.map((route, index) => <Route key={index} {...route} />)}
-                <Route render={() => getInitialPathRedirect()} />
+                <Route render={() => getDefaultRoute()} />
             </Switch>
         </BrowserRouter>
     )
