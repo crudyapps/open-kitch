@@ -28,7 +28,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-google-charts": "^3.0.15",
-    "react-router-dom": "^5.2.0"
+    "universal-cookie": "^4.0.3"
   },
   "staticFiles": {
     "staticPath": "src/public",
