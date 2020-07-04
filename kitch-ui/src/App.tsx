@@ -1,9 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { render } from "react-dom";
-import { Route, BrowserRouter, Redirect, useHistory, Switch } from "react-router-dom";
+import { Route, BrowserRouter, Redirect, Switch } from "react-router-dom";
+import Cookies from 'universal-cookie';
 import MenuItemsPage from "./MenuItemsPage";
 import OrderPage from "./OrderPage";
 import NotFound from "./NotFound";
+
+const isLoggedIn = () => {
+    if (document.location.origin.indexOf("localhost") >= 0) {
+        return true;
+    }
+    const cookies = new Cookies(document.cookie);
+    const identityToken = cookies.get("__Secure-identity-token");
+    return (identityToken !== undefined && identityToken !== null);
+}
 
 const App = () => {
     const routes = [{ path: "/menuItems", component: MenuItemsPage }, { path: "/orders", component: OrderPage }];
@@ -27,4 +37,9 @@ const App = () => {
     )
 }
 
-render(<App />, document.getElementById('app'));
+if (!isLoggedIn()) {
+    document.location.href = `${document.location.origin}/login.html`;
+}
+else {
+    render(<App />, document.getElementById('app'));
+}
