@@ -1,14 +1,9 @@
 import React from "react";
 import Layout from "./Layout";
-import { useHistory, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 function NotFound() {
-    const history = useHistory();
-    const handleNavigateToMenuItems = () => {
-        history.push("/menuItems");
-        return false;
-    }
     return (
         <Layout>
             <div className="not-found">
