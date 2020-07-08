@@ -10,9 +10,17 @@ const isLoggedIn = () => {
     if (document.location.origin.indexOf("localhost") >= 0) {
         return true;
     }
+    let accessToken = window.sessionStorage.getItem("access_token");
+    if (accessToken) {
+        return true;
+    }
     const cookies = new Cookies(document.cookie);
-    const identityToken = cookies.get("__Secure-identity-token");
-    return (identityToken !== undefined && identityToken !== null);
+    accessToken = cookies.get("__Secure-access_token");
+    if (accessToken === undefined || accessToken === null) {
+        return false;
+    }
+    window.sessionStorage.setItem("access_token", accessToken);
+    return true;
 }
 
 const App = () => {

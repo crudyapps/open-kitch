@@ -23,12 +23,12 @@ addEventListener('fetch', event => {
     event.respondWith(new Response('Internal Error', { status: 500 }))
   }
 })
-
+const OneMinute = 60;
 async function handleEvent(event) {
   const url = new URL(event.request.url)
   if (url.pathname === '/login') {
     let redirectResponse = new Response("", Response.redirect(`${url.origin}/`, 302));
-    redirectResponse.headers.set("Set-Cookie", "__Secure-identity-token=some-secret-token; SameSite=Strict; Secure");
+    redirectResponse.headers.set("Set-Cookie", `__Secure-access_token=some-secret-token; Max-Age=${OneMinute};SameSite=Strict; Secure`);
     return redirectResponse;
   }
   let options = (url.pathname === '/login.html') ? {} : {
