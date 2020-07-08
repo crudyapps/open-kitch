@@ -8,6 +8,7 @@ import { getAssetFromKV, mapRequestToAsset, serveSinglePageApp } from '@cloudfla
  *    than the default 404.html page.
  */
 const DEBUG = false
+const OneMinute = 60;
 
 addEventListener('fetch', event => {
   try {
@@ -23,10 +24,34 @@ addEventListener('fetch', event => {
     event.respondWith(new Response('Internal Error', { status: 500 }))
   }
 })
-const OneMinute = 60;
+
+async function getFormFields(request) {
+  const formData = await request.formData()
+  const fields = {}
+  for (const entry of formData.entries()) {
+    fields[entry[0]] = entry[1]
+  }
+  return fields;
+}
+
+function unauthorizedResponse(url) {
+  return new Response("", Response.redirect(`${url.origin}/login.html?failedToLoginPreviously=true`, 302));
+}
+
 async function handleEvent(event) {
-  const url = new URL(event.request.url)
-  if (url.pathname === '/login') {
+  const request = event.request;
+  const url = new URL(request.url);
+  if (url.pathname === '/login' && request.method === 'POST') {
+    const users = JSON.parse(USERS).users;
+    const formFields = await getFormFields(request);
+    const searchResult = users.filter((user) => user.id === formFields.id);
+    if (!searchResult || searchResult.length !== 1) {
+      return unauthorizedResponse(url);
+    }
+    const user = searchResult[0];
+    if (user.password !== formFields.password) {
+      return unauthorizedResponse(url);
+    }
     let redirectResponse = new Response("", Response.redirect(`${url.origin}/`, 302));
     redirectResponse.headers.set("Set-Cookie", `__Secure-access_token=some-secret-token; Max-Age=${OneMinute};SameSite=Strict; Secure`);
     return redirectResponse;
