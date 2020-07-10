@@ -23,14 +23,14 @@ const PORT = process.env.PORT || 1234;
 app.use(bundler.middleware());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.set('loginRetryCount', 0);
+app.set('loginTries', 0);
 app.post("/login", (request, response) => {
     const userId = request.body.id;
-    const maxRetries = 5;
-    const retries = app.get('loginRetryCount');
-    if (retries >= maxRetries) {
+    const maxTries = 5;
+    const tries = app.get('loginTries');
+    if (tries > maxTries) {
         response
-            .redirect(302, `/login.html?retries=${retries}`)
+            .redirect(302, `/login.html?tries=${tries}`)
         return;
     }
     if (userId === 'anon' && request.body.password === '123') {
@@ -38,20 +38,20 @@ app.post("/login", (request, response) => {
         response
             .cookie("__Secure-access_token", token, { sameSite: 'strict', maxAge: 60000, secure: true })
             .redirect(302, "/")
-        app.set('loginRetryCount', 0);
+        app.set('loginTries', 0);
         return;
     }
-    const newRetries = retries + 1;
-    app.set('loginRetryCount', newRetries);
+    const newTries = tries + 1;
+    app.set('loginTries', newTries);
 
-    if (newRetries === 5) {
+    if (newTries === 5) {
         setInterval(() => {
-            app.set('loginRetryCount', 0);
-        }, 60 * 1000);
+            app.set('loginTries', 0);
+        }, 5 * 60 * 1000);
     }
 
     response
-        .redirect(302, `/login.html?retries=${newRetries}`)
+        .redirect(302, `/login.html?tries=${newTries}`)
 
 });
 
