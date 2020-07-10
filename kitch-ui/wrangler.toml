@@ -1,6 +1,9 @@
 name = "open-kitch"
 type = "javascript"
 workers_dev = true
+kv_namespaces = [ 
+         { binding = "LOGINFAILURES", id = "7bf292618008461185f4dd0bc77cd82e" }
+]
 
 [site]
 bucket = "./dist"

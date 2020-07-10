@@ -7,9 +7,6 @@ import OrderPage from "./OrderPage";
 import NotFound from "./NotFound";
 
 const isLoggedIn = () => {
-    if (document.location.origin.indexOf("localhost") >= 0) {
-        return true;
-    }
     let accessToken = window.sessionStorage.getItem("access_token");
     if (accessToken) {
         return true;

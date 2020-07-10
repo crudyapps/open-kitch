@@ -1,4 +1,5 @@
 import { getAssetFromKV, mapRequestToAsset, serveSinglePageApp } from '@cloudflare/kv-asset-handler'
+import jwt from 'jsonwebtoken';
 
 /**
  * The DEBUG flag will do two things that help during development:
@@ -8,6 +9,7 @@ import { getAssetFromKV, mapRequestToAsset, serveSinglePageApp } from '@cloudfla
  *    than the default 404.html page.
  */
 const DEBUG = false
+const OneMinute = 60;
 
 addEventListener('fetch', event => {
   try {
@@ -23,14 +25,75 @@ addEventListener('fetch', event => {
     event.respondWith(new Response('Internal Error', { status: 500 }))
   }
 })
-const OneMinute = 60;
+
+async function getFormFields(request) {
+  const formData = await request.formData()
+  const fields = {}
+  for (const entry of formData.entries()) {
+    fields[entry[0]] = entry[1]
+  }
+  return fields;
+}
+const MaxTries = 5;
+const FiveMinutes = 5 * 60;
+function getLoginFailures(getLoginFailuresResult) {
+  console.log(`getLoginFailuresResult=${getLoginFailuresResult}`);
+  if (getLoginFailuresResult && getLoginFailuresResult.length > 0) {
+    const loginFailures = JSON.parse(getLoginFailuresResult);
+    return { recordExists: true, count: loginFailures.count }
+  }
+  return { recordExists: false, count: 0 };
+}
+
+function hasValidCredentials(users, formFields) {
+  const searchResult = users.filter((user) => user.id === formFields.id);
+  if (!searchResult || searchResult.length !== 1) {
+    return false;
+  }
+  const user = searchResult[0];
+  if (user.password !== formFields.password) {
+    return false;
+  }
+  return true;
+}
+
 async function handleEvent(event) {
-  const url = new URL(event.request.url)
-  if (url.pathname === '/login') {
+  const request = event.request;
+  const clientIp = request.headers.get("CF-Connecting-IP");
+  const now = Date.now();
+  const url = new URL(request.url);
+  if (url.pathname === '/login' && request.method === 'POST') {
+
+    // skip verification after limit breach
+    console.log(`clientIp=${clientIp}`);
+    const loginFailures = getLoginFailures(await LOGINFAILURES.get(clientIp));
+    if (loginFailures.count === 0 && loginFailures.recordExists) {
+      await LOGINFAILURES.delete(clientIp);
+    }
+    if (loginFailures.count >= MaxTries) {
+      return new Response("", Response.redirect(`${url.origin}/login.html?tries=${MaxTries}`, 302));
+    }
+
+    // verify
+    const users = JSON.parse(USERS).users;
+    const formFields = await getFormFields(request);
+    if (!hasValidCredentials(users, formFields)) {
+      console.log(loginFailures);
+      const newCount = loginFailures.count + 1;
+      await LOGINFAILURES.put(clientIp, JSON.stringify({ lastFailure: now, count: newCount }), { expirationTtl: FiveMinutes });
+      return new Response("", Response.redirect(`${url.origin}/login.html?tries=${newCount}`, 302));
+    }
+
+    // generate and return token
+    if (loginFailures.recordExists) {
+      LOGINFAILURES.delete(clientIp);
+    }
+    const token = jwt.sign({ userId: formFields.id }, ACCESSTOKEN_PRIVKEY, { algorithm: 'RS256', expiresIn: "1d" });
     let redirectResponse = new Response("", Response.redirect(`${url.origin}/`, 302));
-    redirectResponse.headers.set("Set-Cookie", `__Secure-access_token=some-secret-token; Max-Age=${OneMinute};SameSite=Strict; Secure`);
+    redirectResponse.headers.set("Set-Cookie", `__Secure-access_token=${token}; Max-Age=${OneMinute};SameSite=Strict; Secure`);
     return redirectResponse;
   }
+
   let options = (url.pathname === '/login.html') ? {} : {
     mapRequestToAsset: serveSinglePageApp
   };

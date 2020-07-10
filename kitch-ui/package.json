@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node devServer.js",
     "clean": "rm -rf dist .cache",
-    "build-prod": "npm run clean && NODE_ENV=production parcel build ./src/index.html --no-minify",
+    "build-prod": "npm run clean && NODE_ENV=production parcel build ./src/index.html ./src/login.html --no-minify",
     "loc-to-prod": "npm run build-prod && env-cmd -f ./.local-to-prod wrangler publish"
   },
   "author": "crudyapps",
@@ -18,9 +18,12 @@
   "devDependencies": {
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
+    "body-parser": "^1.19.0",
     "env-cmd": "^10.1.0",
     "express": "^4.17.1",
     "https": "^1.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "parcel": "^2.0.0-beta.1",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-static-files-copy": "^2.4.3",
     "typescript": "^3.9.3"
