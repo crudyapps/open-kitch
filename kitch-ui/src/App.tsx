@@ -5,20 +5,8 @@ import Cookies from 'universal-cookie';
 import MenuItemsPage from "./MenuItemsPage";
 import OrderPage from "./OrderPage";
 import NotFound from "./NotFound";
+import getAccessToken, { saveAccessToken } from "./accessToken";
 
-const isLoggedIn = () => {
-    let accessToken = window.sessionStorage.getItem("access_token");
-    if (accessToken) {
-        return true;
-    }
-    const cookies = new Cookies(document.cookie);
-    accessToken = cookies.get("__Secure-access_token");
-    if (accessToken === undefined || accessToken === null) {
-        return false;
-    }
-    window.sessionStorage.setItem("access_token", accessToken);
-    return true;
-}
 
 const App = () => {
     const routes = [{ path: "/menuItems", component: MenuItemsPage }, { path: "/orders", component: OrderPage }];
@@ -42,9 +30,11 @@ const App = () => {
     )
 }
 
-if (!isLoggedIn()) {
+const access = getAccessToken();
+if (!access.token) {
     document.location.href = `${document.location.origin}/login.html`;
 }
 else {
+    saveAccessToken(access.token);
     render(<App />, document.getElementById('app'));
 }
