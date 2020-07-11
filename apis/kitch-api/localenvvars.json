@@ -1,0 +1,5 @@
+{
+    "KitchApiFunction": {
+        "DYNAMODB_ENDPOINT": "http://host.docker.internal:8000"
+    }
+}
