@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+DYNAMODB_ENDPOINT="http://host.docker.internal:8000"
+WEB_CLIENT_ORIGIN="https://localhost:1234"
+overrides="ParameterKey=DynamoDbEndpoint,ParameterValue=$DYNAMODB_ENDPOINT ParameterKey=WebClientOrigin,ParameterValue='$WEB_CLIENT_ORIGIN'"
+echo $overrides
+sam local start-api --parameter-overrides "$overrides" --skip-pull-image

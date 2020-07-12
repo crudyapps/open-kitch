@@ -1,20 +1,4 @@
 import * as AWS from "aws-sdk";
-// const axios = require('axios')
-// const url = 'http://checkip.amazonaws.com/';
-let response;
-
-/**
- *
- * Event doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
- * @param {Object} event - API Gateway Lambda Proxy Input Format
- *
- * Context doc: https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-context.html 
- * @param {Object} context
- *
- * Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
- * @returns {Object} object - API Gateway Lambda Proxy Output Format
- * 
- */
 
 enum RouteKeys {
     GET_MENUITEMS = "GET /kitchens/{kitchenId}/menuItems",
@@ -31,7 +15,15 @@ function createDocClient() {
 }
 
 exports.lambdaHandler = async (event, context) => {
+    const webClientOrigin = process.env.WEB_CLIENT_ORIGIN?.replace(/'/g, "");
+    const headers = {
+        'Access-Control-Allow-Origin': webClientOrigin,
+        'Access-Control-Allow-Methods': '*',
+        'Access-Control-Allow-Headers': '*',
+        'Content-Type': 'application/json',
+    };
 
+    console.log(`webClientOrigin=${webClientOrigin}`);
     try {
         const routeKey = `${event.httpMethod} ${event.resource}`;
         switch (routeKey) {
@@ -47,16 +39,19 @@ exports.lambdaHandler = async (event, context) => {
                 }).promise();
                 if (!result.Items) {
                     return {
+                        headers,
                         'statusCode': 404
                     }
                 }
                 return {
+                    headers,
                     'statusCode': 200,
                     'body': JSON.stringify({
                         menuItems: result.Items
                     })
                 };
             }
+
             case RouteKeys.PUT_MENUITEMS: {
                 const { kitchenId, menuItemId } = event.pathParameters;
                 const menuItem = JSON.parse(event.body);
@@ -65,12 +60,14 @@ exports.lambdaHandler = async (event, context) => {
                     .put({ TableName: "menuItems", Item: { id: menuItemId, kitchenId, ...menuItem } })
                     .promise();
                 return {
-                    statusCode: 201,
+                    headers,
+                    statusCode: 200,
                 };
             }
 
             default:
                 return {
+                    headers,
                     'statusCode': 404
                 }
         }

@@ -59,6 +59,10 @@
     padding: 0em 0em 1em 0em;
 }
 
+input {
+    padding: 0.5em;
+}
+
 .row-container {
     display: flex;
     flex-direction: column;
@@ -70,27 +74,45 @@
     color: white;
     background-color: teal;
 }
+
 .row {
     display: flex;
-    justify-content: space-between;
 }
 
 
 .menu-item {
-    width: 5em;
+    flex: 1 0 8em;
+}
+.menu-item > input {
+    width: 8em;
 }
 
 .menu-name {
+    flex: 5 0 15em;
+}
+
+.menu-name > input {
     width: 15em;
 }
 
 .menu-description {
+    flex: 15 0 20em;
+}
+
+.menu-description > input {
     width: 20em;
 }
 
 .menu-price {
+    flex: 2 0 8em;
+}
+
+.menu-price > input {
     width: 8em;
-    text-align: right;
+}
+
+.menu-action {
+    flex: 1 0 2em;
 }
 
 .order {

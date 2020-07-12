@@ -15,11 +15,13 @@
     "build-sam": "cd .. && sam build",
     "build-src": "tsc src/*.ts -outDir dist",
     "build": "npm run clean && npm run build-src && gulp && npm run build-sam",
-    "start-http-api": "sam local start-api",
+    "echo": "cd .. && env-cmd -f ./local.env echo DynamoDbEndpoint=$DYNAMODB_ENDPOINT WebClientOrigin=$WEB_CLIENT_ORIGIN",
+    "start-api": "cd .. && ./start-api",
     "start-dyndb": "docker run -d --restart unless-stopped --name kitch-db -p 8000:8000 amazon/dynamodb-local:latest",
     "start-dyndb-admin": "DYNAMO_ENDPOINT=http://localhost:8000 dynamodb-admin"
   },
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.59",
     "@types/node": "^14.0.22",
     "chai": "^4.2.0",
     "dynamodb-admin": "^4.0.0",

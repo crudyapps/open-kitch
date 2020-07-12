@@ -4,6 +4,9 @@ Parameters:
   DynamoDbEndpoint:
     Type: String
     Description: Dynamo db endpoint
+  WebClientOrigin:
+    Type: String
+    Description: Web app origin
 Description: >
   open-kitch-app
 
@@ -13,6 +16,16 @@ Description: >
 Globals:
   Function:
     Timeout: 3
+    MemorySize: 512
+  Api:
+    Cors:
+      AllowOrigin: !Join
+        - ""
+        - - "'"
+          - !Ref WebClientOrigin
+          - "'"
+      AllowMethods: "'*'"
+      AllowHeaders: "'*'"
 
 Resources:
   KitchApiFunction:
@@ -24,14 +37,15 @@ Resources:
       Environment:
         Variables:
           DYNAMODB_ENDPOINT: !Ref DynamoDbEndpoint
+          WEB_CLIENT_ORIGIN: !Ref WebClientOrigin
       Events:
         GetMenuItems:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api
           Properties:
             Path: /kitchens/{kitchenId}/menuItems
             Method: get
         PutMenuItems:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api
           Properties:
             Path: /kitchens/{kitchenId}/menuItems/{menuItemId}
             Method: put
