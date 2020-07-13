@@ -1,6 +1,6 @@
 import { Money, MoneyJson } from "./money";
-import { MenuItem } from "./MenuItemsPage";
 
+export const kitchenId = "1";
 export namespace api {
 
     enum HttpStatus {
@@ -22,7 +22,7 @@ export namespace api {
         }
     }
     export namespace kitchen {
-        export function getMenuItems(kitchenId: string): Promise<MenuItem[]> {
+        export function getMenuItems(kitchenId: string): Promise<contracts.MenuItem[]> {
             return call(`/kitchens/${kitchenId}/menuItems`)
                 .then((response) => {
                     if (response.status === HttpStatus.NotFound) {
@@ -30,7 +30,7 @@ export namespace api {
                     }
                     return response.json();
                 })
-                .then((json) => {
+                .then((json: { menuItems: contracts.MenuItem[] }) => {
                     const menuItems = json.menuItems.map(item => {
                         const { id, name, description, price } = item;
                         return {
