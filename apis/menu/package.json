@@ -1,0 +1,22 @@
+{
+  "name": "menu",
+  "version": "1.0.0",
+  "description": "api functions for menu",
+  "main": "app.js",
+  "repository": "https://github.com/crudyapps/open-kitch.git",
+  "author": "SAM CLI",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.713.0"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "initialise": "npm i",
+    "build": "npm run clean && tsc src/*.ts -outDir dist && gulp"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.22",
+    "gulp": "^4.0.2",
+    "typescript": "^3.9.6"
+  }
+}

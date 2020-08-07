@@ -1,0 +1,20 @@
+{
+  "name": "open-kitch-apis",
+  "version": "1.0.0",
+  "description": "apis for open-kitch",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf .aws-sam",
+    "build-menu": "npm --prefix menu run build",
+    "build": "npm run clean && npm run build-menu && sam build",
+    "start": "sam local start-api --skip-pull-image",
+    "sdb": "./init-dynamodb",
+    "sdbui": "DYNAMO_ENDPOINT=http://localhost:8000 dynamodb-admin"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^5.2.0",
+    "dynamodb-admin": "^4.0.0"
+  }
+}
