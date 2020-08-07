@@ -1,0 +1,41 @@
+{
+    "AttributeDefinitions": [
+        {
+            "AttributeName": "id",
+            "AttributeType": "N"
+        },
+        {
+            "AttributeName": "kitchenId",
+            "AttributeType": "N"
+        }
+    ],
+    "TableName": "menuItems",
+    "KeySchema": [
+        {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+        }
+    ],
+    "ProvisionedThroughput": {
+        "ReadCapacityUnits": 3,
+        "WriteCapacityUnits": 3
+    },
+    "GlobalSecondaryIndexes": [
+        {
+            "IndexName": "ix-kitchen",
+            "KeySchema": [
+                {
+                    "AttributeName": "kitchenId",
+                    "KeyType": "HASH"
+                }
+            ],
+            "Projection": {
+                "ProjectionType": "ALL"
+            },
+            "ProvisionedThroughput": {
+                "ReadCapacityUnits": 3,
+                "WriteCapacityUnits": 3
+            }
+        }
+    ]
+}

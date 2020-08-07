@@ -33,6 +33,8 @@
     "react-dom": "^16.13.1",
     "react-google-charts": "^3.0.15",
     "react-router-dom": "^5.2.0",
+    "react-spinners": "^0.9.0",
+    "react-switch": "^5.0.1",
     "universal-cookie": "^4.0.3"
   },
   "staticFiles": {

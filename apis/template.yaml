@@ -4,34 +4,47 @@ Parameters:
   DynamoDbEndpoint:
     Type: String
     Description: Dynamo db endpoint
+    Default: http://host.docker.internal:8000
+  WebClientOrigin:
+    Type: String
+    Description: Web app origin
+    Default: https://localhost:1234
 Description: >
   open-kitch-app
 
-  Sample SAM Template for open-kitch-app
-
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
     Timeout: 3
+    MemorySize: 512
+  Api:
+    Cors:
+      AllowOrigin: !Join
+        - ""
+        - - "'"
+          - !Ref WebClientOrigin
+          - "'"
+      AllowMethods: "'*'"
+      AllowHeaders: "'*'"
 
 Resources:
-  KitchApiFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+  MenuFunctions:
+    Type: AWS::Serverless::Function
     Properties:
-      CodeUri: kitch-api/dist
+      CodeUri: menu/dist
       Handler: app.lambdaHandler
       Runtime: nodejs12.x
       Environment:
         Variables:
           DYNAMODB_ENDPOINT: !Ref DynamoDbEndpoint
+          WEB_CLIENT_ORIGIN: !Ref WebClientOrigin
       Events:
         GetMenuItems:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api
           Properties:
             Path: /kitchens/{kitchenId}/menuItems
             Method: get
-        PutMenuItems:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+        PutMenuItem:
+          Type: Api
           Properties:
             Path: /kitchens/{kitchenId}/menuItems/{menuItemId}
             Method: put
