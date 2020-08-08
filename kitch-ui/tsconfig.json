@@ -3,6 +3,10 @@
         "esModuleInterop": true,
         "jsx": "react",
         "strict": true,
-        "target": "ES2016"
+        "target": "ES2016",
+        "lib": [
+            "es2017",
+            "dom"
+        ]
     }
 }
