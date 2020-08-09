@@ -23,7 +23,7 @@ export class Money {
 
     public toString(includeCurrency?: boolean) {
         const { currency, whole, decimal } = this;
-        return `${includeCurrency ? currency : ''}${whole}.${decimal}`;
+        return `${includeCurrency ? currency : ''}${whole}.${String(decimal).padStart(2, "0")}`;
     }
 
     public static fromJSON(obj: MoneyJson) {

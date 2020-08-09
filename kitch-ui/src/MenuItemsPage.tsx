@@ -103,8 +103,8 @@ export default function MenuItemsPage() {
                         <Switch
                             checked={isEditMode}
                             onChange={() => setEditMode(!isEditMode)}
-                            onColor="#86d3ff"
-                            onHandleColor="#2693e6"
+                            onColor="#aaaaaa"
+                            onHandleColor="#dddddd"
                             handleDiameter={15}
                             uncheckedIcon={false}
                             checkedIcon={false}
