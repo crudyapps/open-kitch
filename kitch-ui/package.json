@@ -11,7 +11,7 @@
     "start": "node devServer.js",
     "clean": "rm -rf dist .cache",
     "build-prod": "npm run clean && NODE_ENV=production parcel build ./src/index.html ./src/login.html --no-minify",
-    "loc-to-prod": "npm run build-prod && env-cmd -f ./.local-to-prod wrangler publish"
+    "loc-to-prod": "npm run build-prod && node prodConfig.js && env-cmd -f ./.local-to-prod wrangler publish"
   },
   "author": "crudyapps",
   "license": "ISC",

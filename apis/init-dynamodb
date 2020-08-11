@@ -24,9 +24,9 @@ fi
 
 export AWS_PAGER=""
 TABLE_NAME=menuItems
-QUERY="TableNames[?contains(@,\`$TABLE_NAME\`) == \`true\`]"
+QUERY="TableNames[?contains(@,\`$TABLE_NAME\`) == \`true\`] | [0]"
 table=$(aws dynamodb list-tables --endpoint-url http://localhost:8000 --query "$QUERY")
-if [ -z "$table" ]
+if [ "$table" == "null" ]
     then
     echo "creating table $TABLE_NAME"
     aws dynamodb create-table --cli-input-json file://table-$TABLE_NAME.json --endpoint-url $DYNAMO_ENDPOINT --output text

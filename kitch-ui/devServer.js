@@ -4,6 +4,7 @@ const express = require('express');
 const https = require('https');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+fs.writeFileSync(`${__dirname}/dist/config.json`, `{ "apiBaseUrl": "http://localhost:3000" }`);
 
 var key = fs.readFileSync(__dirname + '/selfsigned.key');
 var cert = fs.readFileSync(__dirname + '/selfsigned.crt');

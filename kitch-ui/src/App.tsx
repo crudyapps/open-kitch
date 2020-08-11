@@ -38,3 +38,4 @@ else {
     saveAccessToken(access.token);
     render(<App />, document.getElementById('app'));
 }
+

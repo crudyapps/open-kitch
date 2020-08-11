@@ -1,4 +1,5 @@
 import { Money, MoneyJson } from "./money";
+import { getConfig } from "./config";
 
 export const kitchenId = "1";
 export namespace api {
@@ -8,7 +9,9 @@ export namespace api {
     }
     function createFetch() {
         return function (path: string, options?: RequestInit): Promise<Response> {
-            return fetch(`http://localhost:3000${path}`, options);
+            return getConfig()
+                .then((config) => fetch(`${config.apiBaseUrl}${path}`, options))
+
         }
     }
 

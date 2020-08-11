@@ -7,7 +7,7 @@ enum RouteKeys {
 }
 function createDocClient() {
     console.log(`dynamodb endpoint = ${process.env.DYNAMODB_ENDPOINT}`);
-    if (process.env.DYNAMODB_ENDPOINT) {
+    if (process.env.DYNAMODB_ENDPOINT !== 'notset') {
         return new AWS.DynamoDB.DocumentClient({
             endpoint: process.env.DYNAMODB_ENDPOINT
         });
