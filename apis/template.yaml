@@ -9,6 +9,11 @@ Parameters:
     Type: String
     Description: Web app origin
     Default: https://localhost:1234
+  AccessTokenPublicKey:
+    Type: String
+    Description: Public Key to verify access token
+    Default: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAznNPYN2YjcbT9AQta8zpD75rBtnW57kl9hNgO7mYBsE6k5Yvy4zVR8H1Cw5Mz/MfPafhUnFMboQ2RMympwyakhNRcbZPJWFyzgQk9Cyg8UrOJuQEMoXtAR/PJ3WUKvoF9ynvUWVdto0FRRbA89X0LQUG4PXlKS6o/tzdhpOuo40a10Nj2O5Vd7aZri0iXAuBju/Q1HQk3bAwxC8APBq2SceLEd/Hgh49Ip/L/tyTAiuiWClMr5CEb3/0l8PXPIzJmiYw7EsZUwm7LBJT7d3kwthNi4wqkv+TdWHY9TGaZWLxTurS1UgJuYXIDvERvR7o1ZTrJv7X1/5AnWestO4R2QIDAQAB
+    NoEcho: true
 Description: >
   open-kitch-app
 
@@ -25,8 +30,26 @@ Globals:
           - "'"
       AllowMethods: "'*'"
       AllowHeaders: "'*'"
-
+    Auth:
+      DefaultAuthorizer: Authorizer
+      AddDefaultAuthorizerToCorsPreflight: False
+      Authorizers:
+        Authorizer:
+          FunctionPayloadType: TOKEN
+          FunctionArn: !GetAtt AuthFunction.Arn
+          Identity:
+            Headers:
+              - Authorization
 Resources:
+  AuthFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: auth/dist
+      Handler: authoriser.handler
+      Runtime: nodejs12.x
+      Environment:
+        Variables:
+          ACCESS_TOKEN_PUBLIC_KEY: !Ref AccessTokenPublicKey
   MenuFunctions:
     Type: AWS::Serverless::Function
     Properties:
@@ -46,8 +69,3 @@ Resources:
           Properties:
             Path: /kitchens/{kitchenId}/menuItems
             Method: get
-        PutMenuItem:
-          Type: Api
-          Properties:
-            Path: /kitchens/{kitchenId}/menuItems/{menuItemId}
-            Method: put

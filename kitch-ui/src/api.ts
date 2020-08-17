@@ -1,16 +1,31 @@
 import { Money, MoneyJson } from "./money";
 import { getConfig } from "./config";
+import getAccessToken from "./accessToken";
 
+type Header = Record<string, string>;
 export const kitchenId = "1";
 export namespace api {
 
     enum HttpStatus {
         NotFound = 404
     }
+    function getBearerTokenHeader() {
+        const accessToken = getAccessToken();
+        if (!accessToken) {
+            window.location.href = `${window.location.origin}/login`;
+            return;
+        }
+        return {
+            Authorization: `Bearer ${accessToken.token}`
+        }
+    }
     function createFetch() {
         return function (path: string, options?: RequestInit): Promise<Response> {
             return getConfig()
-                .then((config) => fetch(`${config.apiBaseUrl}${path}`, options))
+                .then((config) => {
+                    const headers = { ...getBearerTokenHeader(), "Content-Type": 'application/json' };
+                    return fetch(`${config.apiBaseUrl}${path}`, { headers, ...options });
+                })
 
         }
     }

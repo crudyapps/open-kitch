@@ -18,7 +18,7 @@ export function saveAccessToken(token: string) {
 }
 
 
-export default function getAccessToken(): AccessToken {
+export default function getAccessToken(): AccessToken | null {
     let token = window.sessionStorage.getItem("access_token");
     if (token) {
         return { token, source: AccessTokenSource.SessionStorage }
@@ -26,7 +26,7 @@ export default function getAccessToken(): AccessToken {
     const cookies = new Cookies(document.cookie);
     token = cookies.get("__Secure-access_token");
     if (token === undefined || token === null) {
-        return {};
+        return null;
     }
     return { token, source: AccessTokenSource.SessionStorage };
 }

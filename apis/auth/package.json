@@ -1,0 +1,24 @@
+{
+  "name": "auth",
+  "version": "1.0.0",
+  "description": "api authoriser",
+  "main": "authoriser.js",
+  "repository": "https://github.com/crudyapps/open-kitch.git",
+  "author": "SAM CLI",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.713.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "initialise": "npm i",
+    "build": "npm run clean && tsc src/*.ts -outDir dist && gulp"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/node": "^14.0.22",
+    "gulp": "^4.0.2",
+    "typescript": "^3.9.6"
+  }
+}

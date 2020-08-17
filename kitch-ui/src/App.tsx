@@ -31,7 +31,7 @@ const App = () => {
 }
 
 const access = getAccessToken();
-if (!access.token) {
+if (!access || !access.token) {
     document.location.href = `${document.location.origin}/login.html`;
 }
 else {

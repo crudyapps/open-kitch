@@ -6,7 +6,8 @@
   "scripts": {
     "clean": "rm -rf .aws-sam",
     "build-menu": "npm --prefix menu run build",
-    "build": "npm run clean && npm run build-menu && sam build",
+    "build-auth": "npm --prefix auth run build",
+    "build": "npm run clean && npm run build-auth && npm run build-menu && sam build",
     "start": "sam local start-api --skip-pull-image",
     "sdb": "./init-dynamodb",
     "sdbui": "DYNAMO_ENDPOINT=http://localhost:8000 dynamodb-admin"
