@@ -57,6 +57,12 @@ Resources:
       Runtime: nodejs12.x
       Timeout: 10
       Tracing: Active
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: menuItems
+      Environment:
+        Variables:
+          DYNAMODB_ENDPOINT: !Ref DynamoDbEndpoint
       Events:
         Stream:
           Type: Kinesis
@@ -195,14 +201,15 @@ Resources:
                   integration.request.header.Content-Type: "'application/x-amz-json-1.1'"
                 requestTemplates:
                   application/json: |
-                    #set($payload="{
+                    #set($payload="[JSON]{
                       ""headers"" : {
                         ""source"":""user"",
                         ""requestId"": ""$context.requestId"",
                         ""traceId"" : ""$context.xrayTraceId"",
                         ""name"": ""menuItemSaveRequested""
                       },
-                      ""menuId"" : ""$input.params('menuId')"",
+                      ""menuItem"" : $input.body,
+                      ""id"" : ""$input.params('menuItemId')"",
                       ""kitchenId"" : ""$input.params('kitchenId')"" 
                       }")
                       {

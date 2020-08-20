@@ -1,5 +1,39 @@
+import * as AWS from "aws-sdk";
+
+function createDocClient() {
+    console.log(`dynamodb endpoint = ${process.env.DYNAMODB_ENDPOINT}`);
+    if (process.env.DYNAMODB_ENDPOINT !== 'notset') {
+        return new AWS.DynamoDB.DocumentClient({
+            endpoint: process.env.DYNAMODB_ENDPOINT
+        });
+    }
+    return new AWS.DynamoDB.DocumentClient();
+}
+
 exports.handler = async (event, context) => {
-    console.log(event);
+    var docClient = createDocClient();
+    await Promise.all(event.Records.map(async (record) => {
+        const kitchenId = record.kinesis.partitionKey;
+        var payload = Buffer.from(record.kinesis.data, 'base64').toString();
+        const json = payload.slice(6);
+        console.log(json);
+        const kitchenEvent = JSON.parse(json);
+        const { name } = kitchenEvent.headers
+        switch (name) {
+            case "menuItemSaveRequested": {
+                const { menuItem } = kitchenEvent;
+                console.log("saving menu item...");
+                await docClient
+                    .put({ TableName: "menuItems", Item: { kitchenId: Number(kitchenId), ...menuItem } })
+                    .promise();
+                console.log("saving menu item completed");
+                break;
+            }
+            default:
+                console.log(`unknown event ${name}`);
+        }
+    }));
+    console.log("completed");
     // case RouteKeys.PUT_MENUITEM: {
     //     const { kitchenId, menuItemId } = event.pathParameters;
     //     const menuItem = JSON.parse(event.body);
