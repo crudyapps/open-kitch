@@ -266,18 +266,40 @@ Resources:
 
   AuthFunctionPermission:
     Type: AWS::Lambda::Permission
-    DependsOn:
-      - KitchenApi
     Properties:
       Action: lambda:InvokeFunction
       FunctionName: !Ref AuthFunction
       Principal: apigateway.amazonaws.com
+      SourceArn:
+        !Join [
+          "",
+          [
+            "arn:aws:execute-api:",
+            !Ref AWS::Region,
+            ":",
+            !Ref AWS::AccountId,
+            ":",
+            !Ref KitchenApi,
+            "/*",
+          ],
+        ]
 
   MenuFunctionsPermission:
     Type: AWS::Lambda::Permission
-    DependsOn:
-      - KitchenApi
     Properties:
       Action: lambda:InvokeFunction
       FunctionName: !Ref MenuFunctions
       Principal: apigateway.amazonaws.com
+      SourceArn:
+        !Join [
+          "",
+          [
+            "arn:aws:execute-api:",
+            !Ref AWS::Region,
+            ":",
+            !Ref AWS::AccountId,
+            ":",
+            !Ref KitchenApi,
+            "/*",
+          ],
+        ]
