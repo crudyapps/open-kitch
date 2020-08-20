@@ -15,7 +15,7 @@ function createDocClient() {
     return new AWS.DynamoDB.DocumentClient();
 }
 
-exports.lambdaHandler = async (event, context) => {
+exports.handler = async (event, context) => {
     const webClientOrigin = process.env.WEB_CLIENT_ORIGIN;
     const headers = {
         "Access-Control-Allow-Origin": webClientOrigin,
@@ -52,29 +52,6 @@ exports.lambdaHandler = async (event, context) => {
                     'body': JSON.stringify({
                         menuItems: result.Items
                     })
-                };
-            }
-            case RouteKeys.PUT_MENUITEM: {
-                const { kitchenId, menuItemId } = event.pathParameters;
-                const menuItem = JSON.parse(event.body);
-                var docClient = createDocClient();
-                await docClient
-                    .put({ TableName: "menuItems", Item: { id: menuItemId, kitchenId: Number(kitchenId), ...menuItem } })
-                    .promise();
-                return {
-                    headers,
-                    statusCode: 201,
-                };
-            }
-            case RouteKeys.DELETE_MENUITEM: {
-                const { menuItemId } = event.pathParameters;
-                var docClient = createDocClient();
-                await docClient
-                    .delete({ TableName: "menuItems", Key: { id: menuItemId } })
-                    .promise();
-                return {
-                    headers,
-                    statusCode: 200,
                 };
             }
             default:
