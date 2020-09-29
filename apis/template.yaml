@@ -198,6 +198,7 @@ Resources:
                       method.response.header.Access-Control-Allow-Origin:
                         !Join ["", ["'", !Ref WebClientOrigin, "'"]]
                 requestParameters:
+                  integration.request.header.clientid: "'clientid'"
                   integration.request.header.Content-Type: "'application/x-amz-json-1.1'"
                 requestTemplates:
                   application/json: |
@@ -206,7 +207,8 @@ Resources:
                         ""source"":""user"",
                         ""requestId"": ""$context.requestId"",
                         ""traceId"" : ""$context.xrayTraceId"",
-                        ""name"": ""menuItemSaveRequested""
+                        ""name"": ""menuItemSaveRequested"",
+                        ""clientId"" : ""$util.escapeJavaScript($input.params().header.get('clientid'))""
                       },
                       ""menuItem"" : $input.body,
                       ""id"" : ""$input.params('menuItemId')"",

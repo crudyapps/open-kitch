@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "apis:LambdaFunction",
+            "invokeTarget": {
+                "target": "template",
+                "templatePath": "apis/template.yaml",
+                "logicalId": "LambdaFunction"
+            },
+            "lambda": {
+                "payload": {},
+                "environmentVariables": {}
+            }
+        }
+    ]
+}

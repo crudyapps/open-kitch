@@ -7,9 +7,17 @@ import OrderPage from "./OrderPage";
 import NotFound from "./NotFound";
 import getAccessToken, { saveAccessToken } from "./accessToken";
 
+interface ApplicationContext {
+    clientId: string;
+};
+
+export const AppContext = React.createContext<ApplicationContext>({
+    clientId: String(Date.now()),
+});
 
 const App = () => {
     const routes = [{ path: "/menuItems", component: MenuItemsPage }, { path: "/orders", component: OrderPage }];
+    const appContext: ApplicationContext = { clientId: String(Date.now()) };
     const getDefaultRoute = () => {
         const { pathname, search } = window.location;
 
@@ -21,12 +29,14 @@ const App = () => {
     }
 
     return (
-        <BrowserRouter>
-            <Switch>
-                {routes.map((route, index) => <Route key={index} {...route} />)}
-                <Route render={() => getDefaultRoute()} />
-            </Switch>
-        </BrowserRouter>
+        <AppContext.Provider value={appContext}>
+            <BrowserRouter>
+                <Switch>
+                    {routes.map((route, index) => <Route key={index} {...route} />)}
+                    <Route render={() => getDefaultRoute()} />
+                </Switch>
+            </BrowserRouter>
+        </AppContext.Provider>
     )
 }
 

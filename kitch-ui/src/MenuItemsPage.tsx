@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Layout from "./Layout";
 import { api, kitchenId } from "./api";
 import Switch from "react-switch";
@@ -8,6 +8,8 @@ import MenuItem from "./MenuItem";
 import MenuItemForm from "./MenuItemForm";
 import Modal from "./components/Modal";
 import { Money, Currency } from "./money";
+import { AppContext } from "./App";
+import { Base64 } from 'js-base64';
 
 export default function MenuItemsPage() {
     const [menuItems, setMenuItems] = useState<model.MenuItemState[]>([]);
@@ -16,6 +18,8 @@ export default function MenuItemsPage() {
     const [showModal, setShowModal] = useState(false);
     const [selectedMenuItem, setSelectedMenuItem] = useState<model.MenuItemState | null>(null);
     const [modalActionText, setModalActionText] = useState("");
+    const appContext = useContext(AppContext);
+    const { clientId } = appContext;
 
     useEffect(() => {
         setBusy(true);
@@ -25,6 +29,35 @@ export default function MenuItemsPage() {
                 setBusy(false);
             });
     }, []);
+
+    useEffect(() => {
+        var source = new EventSource(`https://apps.kahgeh.com/sse/clients/${clientId}/events`);
+        const notify = (e: MessageEvent) => {
+            console.log(`received ${JSON.stringify(e)}`);
+            try {
+                if (e.data === "connected") {
+                    return;
+                }
+                const message = Base64.decode(e.data);
+                const eventObj = JSON.parse(message);
+                if (eventObj.event as string === "savedMenuItem") {
+                    console.log("savedMenuItem received, refreshing...");
+                    setBusy(true);
+                    api.kitchen.getMenuItems(kitchenId)
+                        .then((menuItems) => {
+                            setMenuItems(toMenuItemState(menuItems))
+                            setShowModal(false);
+                            setBusy(false);
+                        });
+                }
+            } catch {
+                console.log("error processing event");
+            }
+        };
+        source.addEventListener('message', notify);
+
+        return () => source.removeEventListener('message', notify);
+    }, [])
 
     const selectMenuItem = (menuItem: model.MenuItemState) => {
         if (isEditMode) {
@@ -36,7 +69,7 @@ export default function MenuItemsPage() {
     const addMenuItem = (newMenuItem: model.MenuItemState) => {
         setBusy(true);
         api.kitchen
-            .saveMenuItem(kitchenId, toMenuItemContract(newMenuItem))
+            .saveMenuItem(kitchenId, toMenuItemContract(newMenuItem), clientId)
             .then((response) => {
                 if (response.ok) {
                     const newMenuItemList = [...menuItems];
@@ -51,15 +84,8 @@ export default function MenuItemsPage() {
     const saveMenuItem = (menuItem: model.MenuItemState) => {
         setBusy(true);
         api.kitchen
-            .saveMenuItem(kitchenId, toMenuItemContract(menuItem))
+            .saveMenuItem(kitchenId, toMenuItemContract(menuItem), clientId)
             .then((response) => {
-                if (response.ok) {
-                    const newMenuItemList = [...menuItems].filter((item) => item.id !== menuItem.id);
-                    newMenuItemList.push(menuItem)
-                    setMenuItems(newMenuItemList);
-                    setBusy(false);
-                    setShowModal(false);
-                }
                 setBusy(false);
             });
     }
@@ -67,7 +93,7 @@ export default function MenuItemsPage() {
     const deleteMenuItem = (menuItemId: string) => {
         setBusy(true);
         api.kitchen
-            .deleteMenuItem(kitchenId, Number(menuItemId))
+            .deleteMenuItem(kitchenId, Number(menuItemId), clientId)
             .then(() => {
                 const newMenuItemList = [...menuItems].filter((item) => item.id !== menuItemId);
                 setMenuItems(newMenuItemList);

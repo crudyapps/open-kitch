@@ -59,15 +59,28 @@ export namespace api {
                 });
         }
 
-        export function saveMenuItem(kitchenId: string, menuItem: contracts.MenuItem) {
-            return call(`/kitchens/${kitchenId}/menuItems/${menuItem.id}`, { method: 'PUT', body: JSON.stringify(menuItem) })
+        export function saveMenuItem(kitchenId: string, menuItem: contracts.MenuItem, clientId: string) {
+            return call(`/kitchens/${kitchenId}/menuItems/${menuItem.id}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'clientId': clientId,
+                },
+                method: 'PUT',
+                body: JSON.stringify(menuItem)
+            })
                 .then((response) => {
                     return response;
                 });
         }
 
-        export function deleteMenuItem(kitchenId: string, menuItemId: Number) {
-            return call(`/kitchens/${kitchenId}/menuItems/${menuItemId}`, { method: 'DELETE' })
+        export function deleteMenuItem(kitchenId: string, menuItemId: Number, clientId: string) {
+            return call(`/kitchens/${kitchenId}/menuItems/${menuItemId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'clientId': clientId,
+                },
+                method: 'DELETE'
+            })
                 .then((response) => {
                     return response;
                 });

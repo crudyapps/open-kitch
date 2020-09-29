@@ -1,4 +1,5 @@
 import * as AWS from "aws-sdk";
+import axios from "axios";
 
 function createDocClient() {
     console.log(`dynamodb endpoint = ${process.env.DYNAMODB_ENDPOINT}`);
@@ -18,7 +19,7 @@ exports.handler = async (event, context) => {
         const json = payload.slice(6);
         console.log(json);
         const kitchenEvent = JSON.parse(json);
-        const { name } = kitchenEvent.headers
+        const { name, clientId } = kitchenEvent.headers
         switch (name) {
             case "menuItemSaveRequested": {
                 const { menuItem } = kitchenEvent;
@@ -27,6 +28,9 @@ exports.handler = async (event, context) => {
                     .put({ TableName: "menuItems", Item: { kitchenId: Number(kitchenId), ...menuItem } })
                     .promise();
                 console.log("saving menu item completed");
+                await axios.put(`https://apps.kahgeh.com/sse/clients/${clientId}/events`,
+                    { event: "savedMenuItem", id: menuItem.id, kitchenId: Number(kitchenId) }
+                );
                 break;
             }
             default:
