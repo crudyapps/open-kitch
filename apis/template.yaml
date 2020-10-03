@@ -82,6 +82,14 @@ Resources:
           version: "1.0"
         servers:
           - url: !Ref WebClientOrigin
+        x-amazon-apigateway-request-validators:
+          all:
+            validateRequestBody: true
+            validateRequestParameters: true
+          params-only:
+            validateRequestBody: false
+            validateRequestParameters: true
+        x-amazon-apigateway-request-validator: params-only
         paths:
           /kitchens/{kitchenId}/menuItems:
             get:
@@ -140,6 +148,7 @@ Resources:
                 passthroughBehavior: "when_no_match"
           /kitchens/{kitchenId}/menuItems/{menuItemId}:
             put:
+              x-amazon-apigateway-request-validator: all
               parameters:
                 - name: "kitchenId"
                   in: "path"
@@ -151,6 +160,12 @@ Resources:
                   required: true
                   schema:
                     type: "string"
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      $ref: "#/components/schemas/SaveMenuItemRequest"
+                required: true
               responses:
                 "500":
                   description: "500 response"
@@ -272,7 +287,45 @@ Resources:
                     ],
                   ]
                 authorizerResultTtlInSeconds: 300
-
+          schemas:
+            Money:
+              type: object
+              required:
+                - currency
+                - whole
+                - decimal
+              properties:
+                currency:
+                  type: string
+                  description: currency
+                whole:
+                  type: string
+                  description: dollar part of money
+                decimal:
+                  type: string
+                  description: cents part of money
+            MenuItem:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: a unique identifier for the menu item
+                name:
+                  type: string
+                  description: a readable name for the menu item
+                description:
+                  type: string
+                  description: a textual description of the menu item
+                price:
+                  $ref: "#/components/schemas/Money"
+            SaveMenuItemRequest:
+              required:
+                - "menuItem"
+              type: "object"
+              description: the menu item to save
+              properties:
+                menuItem:
+                  $ref: "#/components/schemas/MenuItem"
   AuthFunctionPermission:
     Type: AWS::Lambda::Permission
     Properties:
